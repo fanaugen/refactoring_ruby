@@ -1,3 +1,16 @@
+class Customer
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+    @rentals = []
+  end
+
+  def add_rental(rental)
+    @rentals << rental
+  end
+end
+
 class Movie
   REGULAR     = 0
   NEW_RELEASE = 1

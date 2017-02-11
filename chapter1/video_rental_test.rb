@@ -4,6 +4,23 @@ require "minitest/spec"
 require "minitest/pride"
 require_relative "video_rental"
 
+describe Customer do
+  subject { Customer.new("Smith") }
+  it "has a name" do
+    subject.name.must_equal "Smith"
+  end
+
+  it "keeps a record of rentals" do
+    subject.add_rental Rental.new(:movie1, 2)
+    subject.add_rental Rental.new(:movie2, 7)
+    rentals = subject.instance_variable_get :@rentals
+    rentals.must_be_instance_of Array
+    rentals.length.must_equal 2
+    rentals[0].movie.must_equal :movie1
+    rentals[1].movie.must_equal :movie2
+  end
+end
+
 describe Rental do
   it "remembers a movie" do
     rental = Rental.new(:movie, 5)
