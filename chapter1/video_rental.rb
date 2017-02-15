@@ -22,6 +22,14 @@ class Customer
     result.join("\n")
   end
 
+  def total_points
+    frequent_renter_points = 0
+    rentals.each do |rental|
+      frequent_renter_points += rental.frequent_renter_points
+    end
+    frequent_renter_points
+  end
+
   def total_charge
     rentals.sum { |rental| rental.charge }
   end
