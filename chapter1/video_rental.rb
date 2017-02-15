@@ -23,6 +23,14 @@ class Customer
     result.join("\n")
   end
 
+  def total_charge
+    total_amount = 0
+    rentals.each do |rental|
+      total_amount += rental.charge
+    end
+    total_amount
+  end
+
   def add_rental(rental)
     @rentals << rental
   end
