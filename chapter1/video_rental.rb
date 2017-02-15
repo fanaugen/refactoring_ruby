@@ -63,19 +63,25 @@ class Movie
     @title, @price_code = title, price_code
   end
 
-  def charge(days_rented = 1, movie = self)
-    amount = 0
-    case movie.price_code
+  def charge(days_rented)
+    case price_code
     when Movie::REGULAR
-      amount += 2
-      amount += 1.5 * (days_rented - 2) if days_rented > 2
+      if days_rented > 2
+        2 + 1.5 * (days_rented - 2)
+      else
+        2
+      end
+
     when Movie::NEW_RELEASE
-      amount += 3 * days_rented
+      3 * days_rented
+
     when Movie::CHILDRENS
-      amount += 1.5
-      amount += 1.5 * (days_rented - 3) if days_rented > 3
+      if days_rented > 3
+        1.5 + 1.5 * (days_rented - 3)
+      else
+        1.5
+      end
     end
-    amount
   end
 end
 
