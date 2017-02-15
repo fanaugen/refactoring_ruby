@@ -8,11 +8,8 @@ class Customer
 
   def statement
     result = ["Rental Record for #{name}"]
-    frequent_renter_points = 0
 
     rentals.each do |rental|
-      frequent_renter_points += rental.frequent_renter_points
-
       result << "\t#{rental.movie.title}\t#{rental.charge}"
     end
 
@@ -21,6 +18,12 @@ class Customer
     result << "You earned #{total_points} frequent renter points"
     result.join("\n")
   end
+
+  def add_rental(rental)
+    @rentals << rental
+  end
+
+  private
 
   def total_points
     frequent_renter_points = 0
@@ -32,10 +35,6 @@ class Customer
 
   def total_charge
     rentals.sum { |rental| rental.charge }
-  end
-
-  def add_rental(rental)
-    @rentals << rental
   end
 end
 
