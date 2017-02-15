@@ -9,9 +9,9 @@ describe Customer do
   let(:rent) do
     lambda { |movie, days| subject.add_rental(Rental.new(movie, days)) }
   end
-  let(:regular_movie)   { Movie.new("Regent", Movie::REGULAR) }
-  let(:new_movie)       { Movie.new("Newton", Movie::NEW_RELEASE) }
-  let(:childrens_movie) { Movie.new("Chills", Movie::CHILDRENS) }
+  let(:regular_movie)   { Movie.new "Regent", Movie::RegularPrice.new }
+  let(:new_movie)       { Movie.new "Newton", Movie::NewReleasePrice.new }
+  let(:childrens_movie) { Movie.new "Chills", Movie::ChildrensPrice.new }
 
 
   it "has a name" do
@@ -157,9 +157,9 @@ describe Rental do
 end
 
 describe Movie do
-  let(:regular)     { Movie::REGULAR }
-  let(:new_release) { Movie::NEW_RELEASE }
-  let(:childrens)   { Movie::CHILDRENS }
+  let(:regular)     { Movie::RegularPrice.new }
+  let(:new_release) { Movie::NewReleasePrice.new }
+  let(:childrens)   { Movie::ChildrensPrice.new }
 
   let(:regular_movie)   { Movie.new("Alien", regular) }
   let(:new_movie)       { Movie.new("Titanic", new_release) }
@@ -209,20 +209,52 @@ describe Movie do
       movie.charge(1).must_equal :initial_charge
       movie.frequent_renter_points(1).must_equal :initial_points
     end
-  end
 
-  it "has constants for price codes" do
-    regular.must_equal 0
-    new_release.must_equal 1
-    childrens.must_equal 2
+    describe "a regular movie" do
+      it "price logic" do
+        (1..2).each do |days|
+          regular_movie.charge(days).must_equal 2
+        end
+        regular_movie.charge(3).must_equal 3.5
+        regular_movie.charge(4).must_equal 5.0
+      end
+
+      it "points" do
+        days = rand(1..10)
+        regular_movie.frequent_renter_points(days).must_equal 1
+      end
+    end
+
+    describe "a new release" do
+      it "price logic" do
+        days = rand(1..10)
+        new_movie.charge(days).must_equal(3 * days)
+      end
+
+      it "points" do
+        new_movie.frequent_renter_points(1).must_equal 1
+        new_movie.frequent_renter_points(2).must_equal 2
+      end
+    end
+
+    describe "a children’s movie" do
+      it "price logic" do
+        (1..3).each do |days|
+          childrens_movie.charge(days).must_equal 1.5
+        end
+        childrens_movie.charge(4).must_equal 3.0
+        childrens_movie.charge(5).must_equal 4.5
+      end
+
+      it "points" do
+        days = rand(1..10)
+        childrens_movie.frequent_renter_points(days).must_equal 1
+      end
+    end
   end
 
   it "has a title" do
     (Movie.new "Alien", regular).title.must_equal "Alien"
-  end
-
-  it "has a price code" do
-    (Movie.new "Alien", 2).price_code.must_equal 2
   end
 
   it "allows changing the price code" do
