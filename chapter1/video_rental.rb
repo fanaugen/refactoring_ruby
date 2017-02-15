@@ -25,6 +25,7 @@ class Customer
     total_amount = frequent_renter_points = 0
 
     rentals.each do |rental|
+      amount_for(rental)
       fee = 0
 
       case rental.movie.price_code
