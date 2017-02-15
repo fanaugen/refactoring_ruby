@@ -72,7 +72,15 @@ class Movie
              end
   end
 
+  module DefaultPrice
+    def frequent_renter_points(days_rented)
+      1
+    end
+  end
+
   class RegularPrice
+    include DefaultPrice
+
     def charge(days_rented)
       if days_rented > 2
         2 + 1.5 * (days_rented - 2)
@@ -86,9 +94,19 @@ class Movie
     def charge(days_rented)
       3 * days_rented
     end
+
+    def frequent_renter_points(days_rented)
+      if days_rented > 1
+        2
+      else
+        1
+      end
+    end
   end
 
   class ChildrensPrice
+    include DefaultPrice
+
     def charge(days_rented)
       if days_rented > 3
         1.5 + 1.5 * (days_rented - 3)
