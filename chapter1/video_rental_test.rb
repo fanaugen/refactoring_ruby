@@ -157,23 +157,40 @@ describe Rental do
 end
 
 describe Movie do
-  let(:regular) { Movie::REGULAR }
+  let(:regular)     { Movie::REGULAR }
   let(:new_release) { Movie::NEW_RELEASE }
+  let(:childrens)   { Movie::CHILDRENS }
+
+  let(:regular_movie)   { Movie.new("Alien", regular) }
+  let(:new_movie)       { Movie.new("Titanic", new_release) }
+  let(:childrens_movie) { Movie.new("Moon", childrens) }
 
   it "has constants for price codes" do
-    Movie::REGULAR.must_equal 0
-    Movie::NEW_RELEASE.must_equal 1
-    Movie::CHILDRENS.must_equal 2
+    regular.must_equal 0
+    new_release.must_equal 1
+    childrens.must_equal 2
+  end
+
+  describe "price polymorphism" do
+    it "picks the appropriate price class" do
+      regular_movie.price.must_be_instance_of Movie::RegularPrice
+      new_movie.price.must_be_instance_of Movie::NewReleasePrice
+      childrens_movie.price.must_be_instance_of Movie::ChildrensPrice
+    end
+
+    it "picks a new price class when you change the price code" do
+      movie = Movie.new "Alien", new_release
+      movie.price_code = regular
+      movie.price.must_be_instance_of Movie::RegularPrice
+    end
   end
 
   it "has a title" do
-    movie = Movie.new "Alien", regular
-    movie.title.must_equal "Alien"
+    (Movie.new "Alien", regular).title.must_equal "Alien"
   end
 
   it "has a price code" do
-    movie = Movie.new "Alien", regular
-    movie.price_code.must_equal regular
+    (Movie.new "Alien", 2).price_code.must_equal 2
   end
 
   it "allows changing the price code" do
