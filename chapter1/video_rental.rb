@@ -71,4 +71,13 @@ class Rental
     end
     amount
   end
+
+  def frequent_renter_points_for(rental = self, frequent_renter_points = 0)
+    frequent_renter_points += 1
+    if rental.movie.price_code == Movie::NEW_RELEASE && rental.days_rented > 1
+      frequent_renter_points += 1
+    end
+    frequent_renter_points
+  end
+
 end
