@@ -6,10 +6,6 @@ class Customer
     @rentals = []
   end
 
-  def amount_for(rental)
-    rental.charge
-  end
-
   def statement
     result = ["Rental Record for #{name}"]
     total_amount = frequent_renter_points = 0
@@ -21,8 +17,8 @@ class Customer
         frequent_renter_points += 1
       end
 
-      result << "\t#{rental.movie.title}\t#{amount_for(rental)}"
-      total_amount += amount_for(rental)
+      result << "\t#{rental.movie.title}\t#{rental.charge}"
+      total_amount += rental.charge
     end
 
     # footer: summary
