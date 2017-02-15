@@ -6,24 +6,60 @@ require_relative "video_rental"
 
 describe Customer do
   subject { Customer.new("Smith") }
+  let(:rent) do
+    lambda { |movie, days| subject.add_rental(Rental.new(movie, days)) }
+  end
+  let(:regular_movie)   { Movie.new("Regent", Movie::REGULAR) }
+  let(:new_movie)       { Movie.new("Newton", Movie::NEW_RELEASE) }
+  let(:childrens_movie) { Movie.new("Chills", Movie::CHILDRENS) }
+
+
   it "has a name" do
     subject.name.must_equal "Smith"
   end
 
   it "keeps a record of rentals" do
-    subject.add_rental Rental.new(:movie1, 2)
-    subject.add_rental Rental.new(:movie2, 7)
+    rent[:movie1, 2]
+    rent[:movie2, 7]
 
     subject.rentals.length.must_equal 2
     subject.rentals[0].movie.must_equal :movie1
     subject.rentals[1].movie.must_equal :movie2
   end
 
-  describe "#statement" do
-    let(:regular_movie)   { Movie.new("Regent", Movie::REGULAR) }
-    let(:new_movie)       { Movie.new("Newton", Movie::NEW_RELEASE) }
-    let(:childrens_movie) { Movie.new("Chills", Movie::CHILDRENS) }
+  describe "#html_statement" do
+    before do
+      #                          fee     points
+      # =======================================
+      rent[regular_movie,   1]  # 2       1 pts
+      rent[regular_movie,   7]  # 9.5     1 pts
+      rent[childrens_movie, 5]  # 4.5     1 pts
+      rent[new_movie,       6]  # 18      2 pts
+      # =======================================
+      #              total:       34.0    5 pts
+    end
 
+    it "returns html output" do
+      subject.html_statement.must_match /<h1>.*<\/h1>/
+    end
+
+    it "prints the correct values formatted as HTML" do
+      subject.html_statement.must_equal <<~HTML
+        <h1>Rentals for <em>Smith</em></h1>
+        <p><ul>
+        <li>Regent: 2</li>
+        <li>Regent: 9.5</li>
+        <li>Chills: 4.5</li>
+        <li>Newton: 18</li>
+        </ul></p>
+        <p>You owe <em>34.0</em></p>
+        <p>Congratulations, you earned <em>5 frequent renter points!</em></p>
+      HTML
+      .chomp
+    end
+  end
+
+  describe "#statement" do
     it "outputs a String" do
       subject.statement.must_be_instance_of String
     end
@@ -34,9 +70,9 @@ describe Customer do
 
     describe "rental costs for 1 day" do
       before do
-        subject.add_rental(Rental.new(regular_movie, 1))
-        subject.add_rental(Rental.new(new_movie, 1))
-        subject.add_rental(Rental.new(childrens_movie, 1))
+        rent[regular_movie, 1]
+        rent[new_movie,     1]
+        rent[childrens_movie, 1]
       end
 
       it "includes movie title and fee for each rented movie" do
@@ -57,30 +93,29 @@ describe Customer do
 
     describe "frequent renter points" do
       it "bonus point for each new release movie rented for 2 or more days" do
-        subject.add_rental(Rental.new(new_movie, 1))
-        subject.add_rental(Rental.new(new_movie, 2)) # <-- bonus point
-        subject.add_rental(Rental.new(regular_movie, 3))
+        rent[new_movie, 1]
+        rent[new_movie, 2] # <-- bonus point
+        rent[regular_movie, 3]
         subject.statement.must_include "You earned 4 frequent renter points"
       end
     end
 
     describe "regular movie, more than two days" do
       it "costs 2 dollars plus 1.5 dollars for each additional day" do
-        subject.add_rental(Rental.new(regular_movie, 4))
+        rent[regular_movie, 4]
         subject.statement.must_match /^\tRegent\t#{2 + 1.5 * 2}$/
       end
     end
 
     describe "childrens movie, more than three days" do
       it "costs 1.5 dollars plus 1.5 dollars for each additional day" do
-        subject.add_rental(Rental.new(childrens_movie, 6))
+        rent[childrens_movie, 6]
         subject.statement.must_match /^\tChills\t#{1.5 + 1.5 * 3}$/
       end
     end
 
     describe "complete example with different numbers" do
       it "prints the statement as expected" do
-        rent = ->(m, d) { subject.add_rental Rental.new(m, d) }
         #                          fee     points
         # =======================================
         rent[regular_movie, 2]   # 2       1

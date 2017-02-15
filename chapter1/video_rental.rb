@@ -19,6 +19,23 @@ class Customer
     result.join("\n")
   end
 
+  def html_statement
+    result = ["<h1>Rentals for <em>#{name}</em></h1>"]
+
+    result << "<p><ul>"
+    rentals.each do |rental|
+      result << "<li>#{rental.movie.title}: #{rental.charge}</li>"
+    end
+    result << "</ul></p>"
+
+    # add summary
+    result << "<p>You owe <em>#{total_charge}</em></p>"
+    result << "<p>Congratulations, you earned <em>#{total_points} " +
+      "frequent renter points!</em></p>"
+
+    result.join("\n")
+  end
+
   def add_rental(rental)
     @rentals << rental
   end
