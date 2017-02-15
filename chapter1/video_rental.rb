@@ -24,12 +24,7 @@ class Customer
   end
 
   def frequent_renter_points_for(rental, frequent_renter_points = 0)
-    rental.frequent_renter_points_for # execute, don’t use
-    frequent_renter_points += 1
-    if rental.movie.price_code == Movie::NEW_RELEASE && rental.days_rented > 1
-      frequent_renter_points += 1
-    end
-    frequent_renter_points
+    rental.frequent_renter_points_for
   end
 
   def add_rental(rental)
