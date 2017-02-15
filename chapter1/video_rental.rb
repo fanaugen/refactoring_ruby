@@ -16,6 +16,7 @@ class Customer
       result << "\t#{rental.movie.title}\t#{rental.charge}"
       total_amount += rental.charge
     end
+    total_charge
 
     # footer: summary
     result << "Amount owed is #{total_amount}"
