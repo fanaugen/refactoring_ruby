@@ -27,6 +27,7 @@ Use these Kindle locations to keep your reading progress in sync with the podcas
 6. [Refactoring Ruby - Ep 6 (Ch 6, pg 101-110)][06] – location 1464 to 1567
 7. [Refactoring Ruby - Ep 7 (Ch 6, pg 111-124)][07] – location 1580 to 1713
 8. [Refactoring Ruby - Ep 8 (Ch 6, pg 124-132)][08] – location 1713 to 1780
+9. [Refactoring Ruby - Ep 9 (Ch 6, pg 133-142)][09] – location 1796 to 1900
 
 [1]: https://www.martinfowler.com/books/refactoringRubyEd.html
 [2]: http://rubybookclub.com/episodes/2016/12/4/refactoring-ruby-ep-1-foreword-ch-1-pg-7-1
@@ -39,3 +40,4 @@ Use these Kindle locations to keep your reading progress in sync with the podcas
 [06]: http://rubybookclub.com/episodes/2017/1/8/refactoring-ruby-ep-6-ch-6-pg-101-110
 [07]: http://rubybookclub.com/episodes/2017/1/14/refactoring-ruby-ep-7-ch-6-pg-111-124
 [08]: http://rubybookclub.com/episodes/2017/1/24/refactoring-ruby-ep-8-ch-6-pg-124-132
+[09]: http://rubybookclub.com/episodes/2017/2/10/refactoring-ruby-ep-9-ch-6-pg-133-142
