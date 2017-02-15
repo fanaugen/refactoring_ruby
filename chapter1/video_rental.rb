@@ -11,6 +11,7 @@ class Customer
     total_amount = frequent_renter_points = 0
 
     rentals.each do |rental|
+      frequent_renter_points_for(rental)
       # bonus point for new release rental of more than 1 day
       frequent_renter_points += 1
       if rental.movie.price_code == Movie::NEW_RELEASE && rental.days_rented > 1
