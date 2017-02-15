@@ -121,16 +121,7 @@ class Movie
   end
 
   def frequent_renter_points(days_rented)
-    case price_code
-    when NEW_RELEASE
-      if days_rented > 1
-        2
-      else
-        1
-      end
-    else
-      1
-    end
+    price.frequent_renter_points(days_rented)
   end
 end
 
