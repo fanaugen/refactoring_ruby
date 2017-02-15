@@ -99,16 +99,7 @@ class Movie
   end
 
   def charge(days_rented)
-    case price_code
-    when REGULAR
-      price.charge(days_rented)
-
-    when NEW_RELEASE
-      price.charge(days_rented)
-
-    when CHILDRENS
-      price.charge(days_rented)
-    end
+    price.charge(days_rented)
   end
 
   def frequent_renter_points(days_rented)
