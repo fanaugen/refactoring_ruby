@@ -73,6 +73,13 @@ class Movie
   end
 
   class RegularPrice
+    def charge(days_rented)
+      if days_rented > 2
+        2 + 1.5 * (days_rented - 2)
+      else
+        2
+      end
+    end
   end
 
   class NewReleasePrice
