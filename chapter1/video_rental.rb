@@ -7,18 +7,6 @@ class Customer
   end
 
   def amount_for(rental)
-    fee = 0
-    case rental.movie.price_code
-    when Movie::REGULAR
-      fee += 2
-      fee += 1.5 * (rental.days_rented - 2) if rental.days_rented > 2
-    when Movie::NEW_RELEASE
-      fee += 3 * rental.days_rented
-    when Movie::CHILDRENS
-      fee += 1.5
-      fee += 1.5 * (rental.days_rented - 3) if rental.days_rented > 3
-    end
-    fee
     rental.charge
   end
 
