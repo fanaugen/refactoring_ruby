@@ -18,6 +18,7 @@ class Customer
       fee += 1.5
       fee += 1.5 * (rental.days_rented - 3) if rental.days_rented > 3
     end
+    fee
   end
 
   def statement
@@ -45,6 +46,7 @@ class Customer
         frequent_renter_points += 1
       end
 
+      fee = amount_for(rental)
       result << "\t#{rental.movie.title}\t#{fee}"
       total_amount += fee
     end
