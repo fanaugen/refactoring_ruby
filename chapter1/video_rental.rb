@@ -91,11 +91,6 @@ class Movie
   def charge(days_rented)
     case price_code
     when REGULAR
-      if days_rented > 2
-        2 + 1.5 * (days_rented - 2)
-      else
-        2
-      end
       price.charge(days_rented)
 
     when NEW_RELEASE
