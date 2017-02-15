@@ -165,24 +165,24 @@ describe Movie do
   let(:new_movie)       { Movie.new("Titanic", new_release) }
   let(:childrens_movie) { Movie.new("Moon", childrens) }
 
+  let(:initial_price) do
+    Class.new(BasicObject) do
+      def charge(_); :initial_charge; end
+      def frequent_renter_points(_); :initial_points; end
+    end.new
+  end
+
+  let(:updated_price) do
+    Class.new(BasicObject) do
+      def charge(_); :updated_charge; end
+      def frequent_renter_points(_); :updated_points; end
+    end.new
+  end
+
   it "has constants for price codes" do
     regular.must_equal 0
     new_release.must_equal 1
     childrens.must_equal 2
-  end
-
-  describe "price polymorphism" do
-    it "picks the appropriate price class" do
-      regular_movie.price.must_be_instance_of Movie::RegularPrice
-      new_movie.price.must_be_instance_of Movie::NewReleasePrice
-      childrens_movie.price.must_be_instance_of Movie::ChildrensPrice
-    end
-
-    it "picks a new price class when you change the price code" do
-      movie = Movie.new "Alien", new_release
-      movie.price_code = regular
-      movie.price.must_be_instance_of Movie::RegularPrice
-    end
   end
 
   it "has a title" do
@@ -197,6 +197,16 @@ describe Movie do
     movie = Movie.new "Alien", new_release
     movie.price_code = regular
     movie.price_code.must_equal regular
+  end
+
+  it "allows setting the price" do
+    movie = Movie.new "Solaris", regular
+    movie.price = updated_price
+    movie.charge(1).must_equal :updated_charge
+  end
+
+  it "does not allow reading the price" do
+    proc {regular_movie.price}.must_raise NoMethodError
   end
 
   it "does not allow changing the title" do

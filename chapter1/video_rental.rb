@@ -56,7 +56,12 @@ class Movie
   NEW_RELEASE = 1
   CHILDRENS   = 2
 
-  attr_reader :title, :price_code, :price
+  attr_reader :title, :price_code
+
+  attr_reader :price
+  private     :price
+
+  attr_writer :price
 
   def initialize(title, the_price_code)
     @title = title
