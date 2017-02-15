@@ -8,15 +8,13 @@ class Customer
 
   def statement
     result = ["Rental Record for #{name}"]
-    total_amount = frequent_renter_points = 0
+    frequent_renter_points = 0
 
     rentals.each do |rental|
       frequent_renter_points += rental.frequent_renter_points
 
       result << "\t#{rental.movie.title}\t#{rental.charge}"
-      total_amount += rental.charge
     end
-    total_charge
 
     # footer: summary
     result << "Amount owed is #{total_charge}"
