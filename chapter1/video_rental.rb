@@ -26,11 +26,7 @@ class Customer
   private
 
   def total_points
-    frequent_renter_points = 0
-    rentals.each do |rental|
-      frequent_renter_points += rental.frequent_renter_points
-    end
-    frequent_renter_points
+    rentals.sum { |rental| rental.frequent_renter_points }
   end
 
   def total_charge
