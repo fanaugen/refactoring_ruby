@@ -7,7 +7,6 @@ class Customer
   end
 
   def amount_for(rental)
-    rental.charge
     fee = 0
     case rental.movie.price_code
     when Movie::REGULAR
@@ -20,6 +19,7 @@ class Customer
       fee += 1.5 * (rental.days_rented - 3) if rental.days_rented > 3
     end
     fee
+    rental.charge
   end
 
   def statement
