@@ -83,6 +83,9 @@ class Movie
   end
 
   class NewReleasePrice
+    def charge(days_rented)
+      3 * days_rented
+    end
   end
 
   class ChildrensPrice
@@ -94,7 +97,7 @@ class Movie
       price.charge(days_rented)
 
     when NEW_RELEASE
-      3 * days_rented
+      price.charge(days_rented)
 
     when CHILDRENS
       if days_rented > 3
