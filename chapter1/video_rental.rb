@@ -27,7 +27,7 @@ class Customer
     result.join("\n")
   end
 
-  def frequent_renter_points_for(rental)
+  def frequent_renter_points_for(rental, frequent_renter_points = 0)
     frequent_renter_points += 1
     if rental.movie.price_code == Movie::NEW_RELEASE && rental.days_rented > 1
       frequent_renter_points += 1
