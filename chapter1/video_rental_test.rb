@@ -13,7 +13,6 @@ describe Customer do
   let(:new_movie)       { Movie.new "Newton", Movie::NewReleasePrice.new }
   let(:childrens_movie) { Movie.new "Chills", Movie::ChildrensPrice.new }
 
-
   it "has a name" do
     subject.name.must_equal "Smith"
   end
@@ -255,12 +254,6 @@ describe Movie do
 
   it "has a title" do
     (Movie.new "Alien", regular).title.must_equal "Alien"
-  end
-
-  it "allows changing the price code" do
-    movie = Movie.new "Alien", new_release
-    movie.price_code = regular
-    movie.price_code.must_equal regular
   end
 
   it "allows setting the price" do

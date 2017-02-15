@@ -52,33 +52,16 @@ class Customer
 end
 
 class Movie
-  REGULAR     = 0
-  NEW_RELEASE = 1
-  CHILDRENS   = 2
-
-  attr_reader :title, :price_code
+  attr_reader :title
 
   attr_reader :price
   private     :price
 
   attr_writer :price
 
-  def initialize(title, the_price_code)
+  def initialize(title, price)
     @title = title
-    self.price_code = the_price_code
-  end
-
-  def price_code=(value)
-    @price_code = value
-    @price = if Numeric === price_code
-               case price_code
-               when REGULAR     then RegularPrice.new
-               when NEW_RELEASE then NewReleasePrice.new
-               when CHILDRENS   then ChildrensPrice.new
-               end
-             else
-               price_code
-             end
+    @price = price
   end
 
   module DefaultPrice
