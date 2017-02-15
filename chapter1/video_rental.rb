@@ -26,29 +26,14 @@ class Customer
     total_amount = frequent_renter_points = 0
 
     rentals.each do |rental|
-      amount_for(rental)
-      fee = 0
-
-      case rental.movie.price_code
-      when Movie::REGULAR
-        fee += 2
-        fee += 1.5 * (rental.days_rented - 2) if rental.days_rented > 2
-      when Movie::NEW_RELEASE
-        fee += 3 * rental.days_rented
-      when Movie::CHILDRENS
-        fee += 1.5
-        fee += 1.5 * (rental.days_rented - 3) if rental.days_rented > 3
-      end
-
       # bonus point for new release rental of more than 1 day
       frequent_renter_points += 1
       if rental.movie.price_code == Movie::NEW_RELEASE && rental.days_rented > 1
         frequent_renter_points += 1
       end
 
-      fee = amount_for(rental)
-      result << "\t#{rental.movie.title}\t#{fee}"
-      total_amount += fee
+      result << "\t#{rental.movie.title}\t#{amount_for(rental)}"
+      total_amount += amount_for(rental)
     end
 
     # footer: summary
