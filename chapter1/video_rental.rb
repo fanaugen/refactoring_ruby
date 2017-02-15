@@ -23,11 +23,7 @@ class Customer
   end
 
   def total_charge
-    total_amount = 0
-    rentals.each do |rental|
-      total_amount += rental.charge
-    end
-    total_amount
+    rentals.sum { |rental| rental.charge }
   end
 
   def add_rental(rental)
