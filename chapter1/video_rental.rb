@@ -17,9 +17,8 @@ class Customer
     end
 
     # footer: summary
-    total_points
     result << "Amount owed is #{total_charge}"
-    result << "You earned #{frequent_renter_points} frequent renter points"
+    result << "You earned #{total_points} frequent renter points"
     result.join("\n")
   end
 
