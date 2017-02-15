@@ -7,6 +7,7 @@ class Customer
   end
 
   def amount_for(rental)
+    rental.charge
     fee = 0
     case rental.movie.price_code
     when Movie::REGULAR
