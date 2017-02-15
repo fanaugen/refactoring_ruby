@@ -179,6 +179,38 @@ describe Movie do
     end.new
   end
 
+  let(:invalid_price) { (Class.new(BasicObject)).new }
+  let(:wrong_args) do
+    Class.new(BasicObject) do
+      def charge; end
+      def frequent_renter_points; end
+    end.new
+  end
+
+  describe "injected price object" do
+    it "must respond to charge with 1 argument" do
+      proc { (Movie.new("title", invalid_price)).charge(2) }
+        .must_raise NoMethodError
+
+      proc { (Movie.new("title", wrong_args)).charge(2) }
+        .must_raise ArgumentError
+    end
+
+    it "must respond to frequent_renter_points with 1 argument" do
+      proc { (Movie.new("title", invalid_price)).frequent_renter_points(1) }
+        .must_raise NoMethodError
+
+      proc { (Movie.new("title", wrong_args)).frequent_renter_points(1) }
+        .must_raise ArgumentError
+    end
+
+    it "is used to calculate the charge and the frequent renter points" do
+      movie = Movie.new "title", initial_price
+      movie.charge(1).must_equal :initial_charge
+      movie.frequent_renter_points(1).must_equal :initial_points
+    end
+  end
+
   it "has constants for price codes" do
     regular.must_equal 0
     new_release.must_equal 1

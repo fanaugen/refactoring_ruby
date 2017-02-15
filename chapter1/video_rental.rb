@@ -70,10 +70,14 @@ class Movie
 
   def price_code=(value)
     @price_code = value
-    @price = case price_code
-             when REGULAR     then RegularPrice.new
-             when NEW_RELEASE then NewReleasePrice.new
-             when CHILDRENS   then ChildrensPrice.new
+    @price = if Numeric === price_code
+               case price_code
+               when REGULAR     then RegularPrice.new
+               when NEW_RELEASE then NewReleasePrice.new
+               when CHILDRENS   then ChildrensPrice.new
+               end
+             else
+               price_code
              end
   end
 
