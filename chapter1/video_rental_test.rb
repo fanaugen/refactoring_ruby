@@ -145,14 +145,14 @@ describe Customer do
 end
 
 describe Rental do
+  subject { Rental.new(:movie, 5) }
+
   it "remembers a movie" do
-    rental = Rental.new(:movie, 5)
-    rental.movie.must_equal :movie
+    subject.movie.must_equal :movie
   end
 
   it "remembers the number of days" do
-    rental = Rental.new(:movie, 5)
-    rental.days_rented.must_equal 5
+    subject.days_rented.must_equal 5
   end
 end
 
